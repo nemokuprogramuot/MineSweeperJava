@@ -89,24 +89,24 @@ public class Game {
         System.out.println("3. Hard (16x30 grid, 99 mines)");
         System.out.println("4. Test (9x9 grid, 2 mines)");
 
-        int choice = scanner.nextInt();
+        String choice = scanner.nextLine();
         switch (choice) {
-            case 1 -> {
+            case "1" -> {
                 rows = 9;
                 cols = 9;
                 numMines = 10;
             }
-            case 2 -> {
+            case "2" -> {
                 rows = 16;
                 cols = 16;
                 numMines = 40;
             }
-            case 3 -> {
+            case "3" -> {
                 rows = 16;
                 cols = 30;
                 numMines = 99;
             }
-            case 4 -> {
+            case "4" -> {
                 rows = 9;
                 cols = 9;
                 numMines = 2;

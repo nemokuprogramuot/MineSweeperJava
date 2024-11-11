@@ -53,10 +53,10 @@ public class Main {
             System.out.println("2. Rules");
             System.out.println(" ");
 
-            int choice = scanner.nextInt();
-            if (choice == 1) {
+            String choice = scanner.nextLine();
+            if (choice.equals("1")) {
                 break;
-            } else if (choice == 2) {
+            } else if (choice.equals("2")){
                 showRules(scanner);
             }
         }
@@ -71,7 +71,7 @@ public class Main {
         System.out.println("To mark a cell as a potential mine, type f followed by the coordinates (e.g., f 2 3). \n");
         System.out.println("Good luck soldier. \n");
         System.out.println("Type anything to continue: ");
-        int temp = scanner.nextInt();
+        String temp = scanner.nextLine();
 
 
     }

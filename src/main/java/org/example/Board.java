@@ -89,9 +89,6 @@ public class Board {
         cells[row][col].toggleFlag();
     }
 
-
-
-
     public boolean isMine(int row, int col) {
         return cells[row][col].isMine();
     }
