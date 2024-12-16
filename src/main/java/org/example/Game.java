@@ -75,7 +75,7 @@ public class Game {
                 checkCell(Integer.parseInt(parts[0]) - 1, Integer.parseInt(parts[1]) - 1);
             }
         } catch (Exception e) {
-            System.out.println("Wrong input, try again");
+            System.out.println("Wrong input, try again"); //
         }
 
     }
@@ -83,6 +83,8 @@ public class Game {
     public void chooseDificulty() {
         clearConsole();
         Scanner scanner = new Scanner(System.in);
+        Difficulty difficulty;
+
         System.out.println("Choose Difficulty:");
         System.out.println("1. Easy (9x9 grid, 10 mines)");
         System.out.println("2. Medium (16x16 grid, 40 mines)");
@@ -90,36 +92,20 @@ public class Game {
         System.out.println("4. Test (9x9 grid, 2 mines)");
 
         String choice = scanner.nextLine();
+
         switch (choice) {
-            case "1" -> {
-                rows = 9;
-                cols = 9;
-                numMines = 10;
-            }
-            case "2" -> {
-                rows = 16;
-                cols = 16;
-                numMines = 40;
-            }
-            case "3" -> {
-                rows = 16;
-                cols = 30;
-                numMines = 99;
-            }
-            case "4" -> {
-                rows = 9;
-                cols = 9;
-                numMines = 2;
-            }
+            case "1" -> difficulty = new EasyDifficulty();
+            case "2" -> difficulty = new MediumDifficulty();
+            case "3" -> difficulty = new HardDifficulty();
+            case "4" -> difficulty = new TestDifficulty();
             default -> {
                 System.out.println("Invalid choice, defaulting to Easy.");
-                rows = 9;
-                cols = 9;
-                numMines = 10;
+                difficulty = new EasyDifficulty();
             }
         }
-
-
+        rows = difficulty.getRows();
+        cols = difficulty.getCols();
+        numMines = difficulty.getNumMines();
     }
 
     public void displayHeaderMessege() {

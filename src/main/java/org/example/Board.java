@@ -15,14 +15,17 @@ public class Board {
         this.numMines = numMines;
         cells = new Cell[rows][cols];
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                cells[row][col] = new Cell();
-            }
-
-        }
+        initializeCells();
         placeMines();
         setNeigboringMines();
+    }
+
+    private void initializeCells() {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                cells[row][col] = new EmptyCell();
+            }
+        }
     }
 
     public String getCell(int row, int col) {
@@ -31,35 +34,47 @@ public class Board {
 
     public void revealCell(int row, int col) {
 
-        cells[row][col].reveal();
-        if (cells[row][col].getNeighborMines() == 0) {
-            for (int i2 = -1; i2 <= 1; i2++) {
-                for (int j2 = -1; j2 <= 1; j2++) {
+        try {
+    if(cells[row][col] instanceof EmptyCell){
+    cells[row][col].reveal();
 
-                    int neighborRow = row + i2;
-                    int neighborCol = col + j2;
+    if (((EmptyCell) cells[row][col]).getNeighborMines() == 0) {
 
-                    if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
-                        if (!cells[neighborRow][neighborCol].isRevealed()) {
-                            revealCell(neighborRow, neighborCol);
-                        }
+        for (int i2 = -1; i2 <= 1; i2++) {
+            for (int j2 = -1; j2 <= 1; j2++) {
+
+                int neighborRow = row + i2;
+                int neighborCol = col + j2;
+
+                if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
+                    if (!cells[neighborRow][neighborCol].isRevealed()) {
+                        revealCell(neighborRow, neighborCol);
                     }
-
                 }
+
             }
         }
-        cells[row][col].setDisplayValue();
+    }
+
+    ((EmptyCell) cells[row][col]).setDisplayValue();
+
+}
+    }
+     catch (Exception e) {
+        System.out.println(e.getMessage()); // "Wrong input, try again"
+    }
     }
 
     private void placeMines() {
         Random rand = new Random();
         int placedMines = 0;
+
         while (placedMines < numMines) {
             int row = rand.nextInt(rows);
             int col = rand.nextInt(cols);
 
             if (!cells[row][col].isMine()) {
-                cells[row][col].setMine();
+                cells[row][col] = new MineCell() ;
                 placedMines++;
 
             }
@@ -76,7 +91,9 @@ public class Board {
                             int neighborCol = j + j2;
 
                             if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
-                                cells[neighborRow][neighborCol].addNeighborMineValue();
+                                if (cells[neighborRow][neighborCol] instanceof EmptyCell) {
+                                    ((EmptyCell) cells[neighborRow][neighborCol]).addNeighborMineValue();
+                                }
                             }
                         }
                     }
@@ -97,7 +114,7 @@ public class Board {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (cells[i][j].isMine()) {
-                    cells[i][j].setDisplayValueToMine();
+                    ((MineCell)cells[i][j]).setDisplayValue();
                 }
             }
         }
@@ -111,6 +128,7 @@ public class Board {
                 }
             }
         }
+
         return true;
     }
     public boolean isFlagged(int row, int col) {
