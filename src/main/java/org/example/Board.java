@@ -5,8 +5,8 @@ import java.util.Random;
 public class Board {
     private Cell[][] cells;
     private int numMines;
-    private int rows ;
-    private int cols ;
+    private int rows;
+    private int cols;
 
 
     public Board(int rows, int cols, int numMines) {
@@ -29,43 +29,42 @@ public class Board {
     }
 
     public String getCell(int row, int col) {
-            return cells[row][col].getDisplayValue();
+        return cells[row][col].getDisplayValue();
     }
 
     public void revealCell(int row, int col) {
 
-        try {
-    if(cells[row][col] instanceof EmptyCell){
-    cells[row][col].reveal();
+        if (cells[row][col] instanceof EmptyCell) {
+            cells[row][col].reveal();
 
-    if (((EmptyCell) cells[row][col]).getNeighborMines() == 0) {
+            checkIfCellEmpty(row, col);
 
-        for (int i2 = -1; i2 <= 1; i2++) {
-            for (int j2 = -1; j2 <= 1; j2++) {
+            ((EmptyCell) cells[row][col]).setDisplayValue();
 
-                int neighborRow = row + i2;
-                int neighborCol = col + j2;
+        }
+    }
 
-                if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
-                    if (!cells[neighborRow][neighborCol].isRevealed()) {
-                        revealCell(neighborRow, neighborCol);
+    public void checkIfCellEmpty(int row, int col) {
+        if (((EmptyCell) cells[row][col]).getNeighborMines() == 0) {
+
+            for (int i2 = -1; i2 <= 1; i2++) {
+                for (int j2 = -1; j2 <= 1; j2++) {
+
+                    int neighborRow = row + i2;
+                    int neighborCol = col + j2;
+
+                    if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
+                        if (!cells[neighborRow][neighborCol].isRevealed()) {
+                            revealCell(neighborRow, neighborCol);
+                        }
                     }
-                }
 
+                }
             }
         }
     }
 
-    ((EmptyCell) cells[row][col]).setDisplayValue();
-
-}
-    }
-     catch (Exception e) {
-        System.out.println(e.getMessage()); // "Wrong input, try again"
-    }
-    }
-
-    private void placeMines() {
+    void placeMines() {
         Random rand = new Random();
         int placedMines = 0;
 
@@ -74,7 +73,7 @@ public class Board {
             int col = rand.nextInt(cols);
 
             if (!cells[row][col].isMine()) {
-                cells[row][col] = new MineCell() ;
+                cells[row][col] = new MineCell();
                 placedMines++;
 
             }
@@ -85,23 +84,33 @@ public class Board {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (cells[i][j].isMine()) {
-                    for (int i2 = -1; i2 <= 1; i2++) {
-                        for (int j2 = -1; j2 <= 1; j2++) {
-                            int neighborRow = i + i2;
-                            int neighborCol = j + j2;
-
-                            if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
-                                if (cells[neighborRow][neighborCol] instanceof EmptyCell) {
-                                    ((EmptyCell) cells[neighborRow][neighborCol]).addNeighborMineValue();
-                                }
-                            }
-                        }
-                    }
+                    checkNighboringMines(i, j);
                 }
             }
         }
     }
-    
+
+    public void checkNighboringMines(int i, int j) {
+        for (int i2 = -1; i2 <= 1; i2++) {
+            for (int j2 = -1; j2 <= 1; j2++) {
+
+                int neighborRow = i + i2;
+                int neighborCol = j + j2;
+
+                if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
+                    addNeigborMineValue(neighborRow, neighborCol);
+                }
+            }
+        }
+
+    }
+
+    public void addNeigborMineValue(int neighborRow, int neighborCol) {
+        if (cells[neighborRow][neighborCol] instanceof EmptyCell) {
+            ((EmptyCell) cells[neighborRow][neighborCol]).addNeighborMineValue();
+        }
+    }
+
     public void flagCell(int row, int col) {
         cells[row][col].toggleFlag();
     }
@@ -114,13 +123,13 @@ public class Board {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (cells[i][j].isMine()) {
-                    ((MineCell)cells[i][j]).setDisplayValue();
+                    ((MineCell) cells[i][j]).setDisplayValue();
                 }
             }
         }
     }
 
-    public boolean checkWin(){
+    public boolean checkWin() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (!cells[i][j].isMine() && !cells[i][j].isRevealed()) {
@@ -131,6 +140,7 @@ public class Board {
 
         return true;
     }
+
     public boolean isFlagged(int row, int col) {
         return cells[row][col].getIsFlagged();
     }

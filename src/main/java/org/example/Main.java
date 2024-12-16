@@ -56,7 +56,7 @@ public class Main {
             String choice = scanner.nextLine();
             if (choice.equals("1")) {
                 break;
-            } else if (choice.equals("2")){
+            } else if (choice.equals("2")) {
                 showRules(scanner);
             }
         }

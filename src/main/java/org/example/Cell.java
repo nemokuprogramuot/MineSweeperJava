@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 
 public abstract class Cell {
-    protected String flagIcon = "\033[32m" + "F" + "\033[0m";
-    protected String questionMarkIcon = "\033[37m" + "?" + "\033[0m";
-    protected String mineIcon = "\033[31m"+"*"+"\033[0m";
+    protected String flagIcon = "F";
+    protected String questionMarkIcon = "?";
+    protected String mineIcon = "*";
 
 
     protected boolean isFlagged = false;
@@ -18,10 +18,11 @@ public abstract class Cell {
 
     public abstract boolean isMine();
 
-    public void reveal(){
+    public void reveal() {
         isRevealed = true;
     }
-    public void toggleFlag(){
+
+    public void toggleFlag() {
         isFlagged = !isFlagged;
         displayValue = (isFlagged && !isRevealed) ? flagIcon :
                 (!isFlagged && !isRevealed) ? questionMarkIcon : displayValue;

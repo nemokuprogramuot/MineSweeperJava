@@ -8,7 +8,7 @@ public class MineCell extends Cell {
         return true;
     }
 
-    public void setDisplayValue(){
+    public void setDisplayValue() {
         displayValue = mineIcon;
     }
 }

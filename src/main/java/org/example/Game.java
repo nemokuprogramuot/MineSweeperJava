@@ -75,7 +75,7 @@ public class Game {
                 checkCell(Integer.parseInt(parts[0]) - 1, Integer.parseInt(parts[1]) - 1);
             }
         } catch (Exception e) {
-            System.out.println("Wrong input, try again"); //
+            System.out.println("Wrong input, try again");
         }
 
     }
